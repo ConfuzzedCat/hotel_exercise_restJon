@@ -46,6 +46,11 @@ Authorization: Bearer {{token}}
 
 ###
 
+GET {{url}}/rooms?priceFrom=500&priceTo=4000
+Authorization: Bearer {{token}}
+
+###
+
 GET {{url}}/rooms/100
 Authorization: Bearer {{token}}
 

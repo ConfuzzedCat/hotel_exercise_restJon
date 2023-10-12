@@ -12,6 +12,7 @@ public class RoomRoute {
 
     protected EndpointGroup getRoutes() {
 
+        // "localhost:7070/api/v1"
         return () -> {
             path("/rooms", () -> {
                 post("/hotel/{id}", roomController::create, RouteRoles.ADMIN, RouteRoles.MANAGER);
