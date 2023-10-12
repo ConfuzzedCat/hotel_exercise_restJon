@@ -50,6 +50,15 @@ public class RoomDao implements dk.lyngby.dao.IDao<Room, Integer> {
         }
     }
 
+    public List<Room> findAllByPrice(Integer priceFrom, Integer priceTo) {
+        try (var em = emf.createEntityManager()) {
+            var query = em.createQuery("SELECT r FROM Room r WHERE r.roomPrice < :priceFrom and r.roomPrice > :priceTo ORDER BY r.roomPrice", Room.class);
+            query.setParameter("priceFrom", priceFrom);
+            query.setParameter("priceTo", priceTo);
+            return query.getResultList();
+        }
+    }
+
     @Override
     public Room create(Room room) {
         try (var em = emf.createEntityManager()) {

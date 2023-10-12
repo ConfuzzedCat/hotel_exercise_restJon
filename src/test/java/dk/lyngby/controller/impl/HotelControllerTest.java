@@ -145,8 +145,8 @@ class HotelControllerTest
     void create()
     {
         Hotel h3 = new Hotel("Cab-inn", "Østergade 2", Hotel.HotelType.BUDGET);
-        Room r1 = new Room(117, new BigDecimal(4500), Room.RoomType.SINGLE);
-        Room r2 = new Room(118, new BigDecimal(2300), Room.RoomType.DOUBLE);
+        Room r1 = new Room(117, new BigDecimal(4500), Room.RoomType.SINGLE, 50);
+        Room r2 = new Room(118, new BigDecimal(2300), Room.RoomType.DOUBLE, 100);
         h3.addRoom(r1);
         h3.addRoom(r2);
         HotelDto newHotel = new HotelDto(h3);

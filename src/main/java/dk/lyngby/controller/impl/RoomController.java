@@ -39,14 +39,32 @@ public class RoomController implements IController<Room, Integer> {
 
     @Override
     public void readAll(Context ctx) {
+        // requests
+        Integer priceFrom = ctx.queryParamAsClass("priceFrom", Integer.class).allowNullable().check(p -> p > 0, "Not a valid price").get();
+        Integer priceTo = ctx.queryParamAsClass("priceTo", Integer.class).allowNullable().check(p -> p > 0, "Not a valid price").get();
+        if (priceFrom != null && priceTo != null && priceFrom > priceTo) {
+            ctx.res().setStatus(400);
+            ctx.json(new Message(400, "Price from must be less than price to"));
+            return;
+        }
+        if (priceFrom == null || priceTo == null) {
+            // entity
+            List<Room> rooms = dao.readAll();
+            // dto
+            List<RoomDto> roomDtos = RoomDto.toRoomDTOList(rooms);
+            // response
+            ctx.res().setStatus(200);
+            ctx.json(roomDtos, RoomDto.class);
+
+            return;
+        }
         // entity
-        List<Room> rooms = dao.readAll();
+        List<Room> rooms = dao.findAllByPrice(priceFrom, priceTo);
         // dto
         List<RoomDto> roomDtos = RoomDto.toRoomDTOList(rooms);
         // response
         ctx.res().setStatus(200);
         ctx.json(roomDtos, RoomDto.class);
-
     }
 
     @Override
