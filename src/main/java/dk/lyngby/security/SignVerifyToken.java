@@ -7,9 +7,11 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import dk.lyngby.dto.UserDTO;
 import dk.lyngby.exception.AuthorizationException;
+import dk.lyngby.exception.ExpiredTokenException;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.UUID;
 
 
 public class SignVerifyToken {
@@ -62,10 +64,10 @@ public class SignVerifyToken {
         return signedJWT;
     }
 
-    public UserDTO getJWTClaimsSet(JWTClaimsSet claimsSet) throws AuthorizationException {
-
+    public UserDTO getJWTClaimsSet(JWTClaimsSet claimsSet) throws ExpiredTokenException {
+        // Token expiration check
         if (new Date().after(claimsSet.getExpirationTime()))
-            throw new AuthorizationException(401, "Token is expired");
+            throw new ExpiredTokenException();
 
         String username = claimsSet.getClaim("username").toString();
         String roles = claimsSet.getClaim("roles").toString();

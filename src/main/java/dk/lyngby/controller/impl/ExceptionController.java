@@ -1,9 +1,6 @@
 package dk.lyngby.controller.impl;
 
-import dk.lyngby.exception.ApiException;
-import dk.lyngby.exception.AuthorizationException;
-import dk.lyngby.exception.Message;
-import dk.lyngby.exception.ValidationMessage;
+import dk.lyngby.exception.*;
 import dk.lyngby.routes.Routes;
 import io.javalin.http.Context;
 import io.javalin.validation.ValidationError;
@@ -21,6 +18,11 @@ public class ExceptionController {
     private final Logger LOGGER = LoggerFactory.getLogger(Routes.class);
     public void exceptionHandlerNotAuthorized(AuthorizationException e, Context ctx) {
         LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
+        ctx.status(e.getStatusCode());
+        ctx.json(new Message(e.getStatusCode(), e.getMessage()));
+    }
+    public void exceptionHandlerTokenExpired(ExpiredTokenException e, Context ctx) {
+        LOGGER.error(ctx.attribute("requestInfo") + " " + e.getStatusCode() + " " + e.getMessage());
         ctx.status(e.getStatusCode());
         ctx.json(new Message(e.getStatusCode(), e.getMessage()));
     }
