@@ -125,20 +125,23 @@ class HotelControllerTest
     {
         // Given -> When -> Then
         List<HotelDto> hotelDtoList =
-                given()
-                        .contentType("application/json")
-                        .when()
-                        .get(BASE_URL + "/hotels")
-                        .then()
-                        .assertThat()
-                        .statusCode(HttpStatus.OK_200)  // could also just be 200
-                        .extract().body().jsonPath().getList("", HotelDto.class);
+                given()                                         // Bygger requestet
+                        .contentType("application/json")     // Sætter content type til Json
+                        .when()                                 // Perform the HTTP request
+                        .get(BASE_URL + "/hotels")           // Sender GET requestet til url'en
+                        .then()                                 // begynder respons validation
+                        .assertThat()                           // her asserter vi på vores respons
+                        .statusCode(HttpStatus.OK_200)          // Tjekker om responscode er 200
+                        .extract()                              // Extracter data fra responsen
+                        .body()                                 // GET'er response body
+                        .jsonPath()                             // parser responsebody til json
+                        .getList("", HotelDto.class);      // - forstår ikke helt? Chatgpt: Deserializer the JSON response into a list of HotelDto objects
 
-        HotelDto h1DTO = new HotelDto(h1);
-        HotelDto h2DTO = new HotelDto(h2);
+        HotelDto h1DTO = new HotelDto(h1);                      // Laver hotelobjekt til h1
+        HotelDto h2DTO = new HotelDto(h2);                      // Laver hotelobjekt til h2
 
-        assertEquals(hotelDtoList.size(), 2);
-        assertThat(hotelDtoList, containsInAnyOrder(h1DTO, h2DTO));
+        assertEquals(hotelDtoList.size(), 2);                       // Tjekker om der er 2 hoteller i listen
+        assertThat(hotelDtoList, containsInAnyOrder(h1DTO, h2DTO));       // Tjekker om listen indeholder h1 og h2 i any rækkefølge
     }
 
 
