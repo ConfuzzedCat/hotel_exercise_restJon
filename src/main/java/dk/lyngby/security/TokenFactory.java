@@ -9,6 +9,7 @@ import dk.lyngby.config.ApplicationConfig;
 import dk.lyngby.dto.UserDTO;
 import dk.lyngby.exception.ApiException;
 import dk.lyngby.exception.AuthorizationException;
+import dk.lyngby.exception.ExpiredTokenException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
@@ -59,7 +60,6 @@ public class TokenFactory {
     public String[] parseJsonObject(String jsonString, Boolean tryLogin) throws ApiException {
         try {
             List<String> roles = Arrays.asList("user", "admin", "manager");
-
             ObjectMapper mapper = new ObjectMapper();
             Map json = mapper.readValue(jsonString, Map.class);
             String username = json.get("username").toString();
@@ -96,7 +96,7 @@ public class TokenFactory {
         }
     }
 
-    public UserDTO verifyToken(String token) throws ApiException, AuthorizationException {
+    public UserDTO verifyToken(String token) throws ApiException, AuthorizationException, ExpiredTokenException {
         try {
             SignedJWT signedJWT = signature.parseTokenAndVerify(token);
             JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();

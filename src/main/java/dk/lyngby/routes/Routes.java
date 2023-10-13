@@ -3,6 +3,7 @@ package dk.lyngby.routes;
 import dk.lyngby.controller.impl.ExceptionController;
 import dk.lyngby.exception.ApiException;
 import dk.lyngby.exception.AuthorizationException;
+import dk.lyngby.exception.ExpiredTokenException;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
@@ -47,6 +48,7 @@ public class Routes {
             app.exception(AuthorizationException.class, exceptionController::exceptionHandlerNotAuthorized);
             app.exception(Exception.class, exceptionController::exceptionHandler);
 
+            app.exception(ExpiredTokenException.class, exceptionController::exceptionHandlerTokenExpired);
         };
     }
 }

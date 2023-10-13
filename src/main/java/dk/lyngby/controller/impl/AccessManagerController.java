@@ -3,6 +3,7 @@ package dk.lyngby.controller.impl;
 import dk.lyngby.dto.UserDTO;
 import dk.lyngby.exception.ApiException;
 import dk.lyngby.exception.AuthorizationException;
+import dk.lyngby.exception.ExpiredTokenException;
 import dk.lyngby.security.RouteRoles;
 import dk.lyngby.security.TokenFactory;
 import io.javalin.http.Context;
@@ -47,8 +48,7 @@ public class AccessManagerController
         }
     }
 
-    private RouteRole[] getUserRole(Context ctx) throws AuthorizationException, ApiException
-    {
+    private RouteRole[] getUserRole(Context ctx) throws AuthorizationException, ApiException, ExpiredTokenException {
         try
         {
             String token = ctx.header("Authorization").split(" ")[1];
