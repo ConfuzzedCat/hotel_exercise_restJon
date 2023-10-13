@@ -68,11 +68,6 @@ class HotelControllerTest
         adminToken = getToken(admin.getUsername(), "admin123");
         userToken = getToken(user.getUsername(), "user123");
 
-        try {
-            Thread.sleep(3600);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @BeforeEach
@@ -164,7 +159,7 @@ class HotelControllerTest
 
         List<RoomDto> roomDtos =
                 given()
-                        .header("Authorization", userToken)
+                        .header("Authorization", adminToken)
                         .contentType(ContentType.JSON)
                         .body(newHotel)
                         .when()
